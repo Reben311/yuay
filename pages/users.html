@@ -23,17 +23,19 @@
       <div class="text-xs text-white/60">Equipment Mgmt</div>
     </div>
   </div>
-  <nav class="flex-1 overflow-y-auto py-4 text-sm">
+  <nav class="flex-1 py-4 text-sm">
     <p class="px-5 mt-3 first:mt-0 text-[11px] uppercase tracking-wider text-white/40 mb-2">Overview</p>
     <a href="admin-dashboard.html" class="nav-link">Dashboard</a>
     <p class="px-5 mt-3 first:mt-0 text-[11px] uppercase tracking-wider text-white/40 mb-2">Catalog</p>
     <a href="equipment.html" class="nav-link">Equipment</a>
     <a href="materials.html" class="nav-link">Campus Materials</a>
+    <p class="px-5 mt-3 first:mt-0 text-[11px] uppercase tracking-wider text-white/40 mb-2">Academics</p>
+    <a href="courses.html" class="nav-link">Courses</a>
+    <a href="students.html" class="nav-link">Students</a>
     <p class="px-5 mt-3 first:mt-0 text-[11px] uppercase tracking-wider text-white/40 mb-2">Transactions</p>
     <a href="requests.html" class="nav-link flex items-center">Borrow Requests<span class="ml-auto text-[10px] bg-gold text-navy-dark font-semibold px-2 py-0.5 rounded-full"><!-- PHP: pending count -->0</span></a>
     <a href="transactions.html" class="nav-link">Transactions</a>
     <p class="px-5 mt-3 first:mt-0 text-[11px] uppercase tracking-wider text-white/40 mb-2">Admin</p>
-    <a href="students.html" class="nav-link">Students</a>
     <a href="users.html" class="nav-link active">System Users</a>
     <a href="admin-settings.html" class="nav-link">Settings</a>
     <a href="change-password.html" class="nav-link">Change Password</a>
@@ -76,26 +78,124 @@
           </table>
         </div>
       </section>
+
+      <section class="card mt-6">
+        <div class="card-header">
+          <h2 class="font-semibold text-navy">Manage Official Authorizations</h2>
+          <button class="btn btn-primary btn-sm" data-modal-open="authorizeOfficial">+ Authorize Official</button>
+        </div>
+        <div class="card-body text-sm text-gray-600 mb-4">
+          <p>Use this section to grant or revoke official (staff/admin) authorization roles to system users. This is separate from creating new user accounts.</p>
+        </div>
+        <div class="overflow-x-auto">
+          <table class="table text-sm">
+            <thead><tr>
+              <th>Username</th><th>Full Name</th><th>Current Role</th><th>Authorized As</th><th>Status</th><th class="text-right">Actions</th>
+            </tr></thead>
+            <tbody>
+              <!-- PHP LOOP: authorized users (students promoted to staff/admin) -->
+              <tr>
+                <td>mchen</td>
+                <td>Michael Chen</td>
+                <td><span class="px-2 py-1 bg-gray-100 text-gray-800 text-xs rounded">User</span></td>
+                <td><span class="px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded">Staff</span></td>
+                <td><span class="px-2 py-1 bg-green-100 text-green-800 text-xs rounded">Active</span></td>
+                <td class="text-right space-x-2">
+                  <button class="text-blue-600 hover:text-blue-800 text-xs font-medium" data-modal-open="editAuthorization" onclick="setAuthorizationData('mchen', 'Michael Chen', 'Staff')">Edit</button>
+                  <button class="text-red-600 hover:text-red-800 text-xs font-medium" data-confirm="Revoke official authorization for Michael Chen?">Revoke</button>
+                </td>
+              </tr>
+              <tr><td colspan="6"><div class="empty text-sm"><p class="font-medium text-gray-700">No authorized officials</p><p class="text-xs">System users can be authorized as officials here.</p></div></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
     </main>
 
+    <!-- Modal: Add System User -->
     <div class="modal" id="addUserModal">
       <div class="modal-card">
-        <div class="card-header"><h3 class="font-semibold text-navy">Add User</h3>
+        <div class="card-header"><h3 class="font-semibold text-navy">Add System User</h3>
           <button data-modal-close class="text-gray-400 hover:text-gray-700">✕</button></div>
         <form method="POST" action="REPLACE_WITH_PHP_ENDPOINT" class="card-body grid grid-cols-1 md:grid-cols-2 gap-4">
-          <div><label class="label">Username</label><input class="input" name="username" required /></div>
-          <div><label class="label">Full name</label><input class="input" name="full_name" required /></div>
-          <div><label class="label">Email</label><input class="input" type="email" name="email" /></div>
-          <div><label class="label">Role</label>
-            <select class="select" name="role"><option>Administrator</option><option>Staff</option><option>Student</option></select>
+          <div><label class="label">Username</label><input class="input" name="username" placeholder="e.g., jsmith" required /></div>
+          <div><label class="label">Full name</label><input class="input" name="full_name" placeholder="e.g., John Smith" required /></div>
+          <div><label class="label">Email</label><input class="input" type="email" name="email" placeholder="john.smith@example.com" /></div>
+          <div><label class="label">Initial Role</label>
+            <select class="select" name="role">
+              <option>Administrator</option>
+              <option>Staff</option>
+              <option>Student</option>
+            </select>
           </div>
           <div><label class="label">Status</label>
-            <select class="select" name="status"><option>Active</option><option>Inactive</option></select>
+            <select class="select" name="status">
+              <option>Active</option>
+              <option>Inactive</option>
+            </select>
           </div>
-          <div><label class="label">Temporary password</label><input class="input" type="password" name="password" /></div>
+          <div><label class="label">Temporary Password</label><input class="input" type="password" name="password" placeholder="User will be prompted to change on first login" /></div>
           <div class="md:col-span-2 flex justify-end gap-2">
             <button type="button" class="btn btn-outline" data-modal-close>Cancel</button>
-            <button type="submit" class="btn btn-primary">Save User</button>
+            <button type="submit" class="btn btn-primary">Create User</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- Modal: Authorize Official -->
+    <div class="modal" id="authorizeOfficial">
+      <div class="modal-card">
+        <div class="card-header"><h3 class="font-semibold text-navy">Authorize Official Role</h3>
+          <button data-modal-close class="text-gray-400 hover:text-gray-700">✕</button></div>
+        <form method="POST" action="REPLACE_WITH_PHP_ENDPOINT" class="card-body grid grid-cols-1 gap-4">
+          <p class="text-sm text-gray-600">Grant official authorization (staff or administrator role) to a system user.</p>
+          <div><label class="label">Select System User</label>
+            <select class="select" name="user_id" required>
+              <option value="">Choose a user...</option>
+              <!-- PHP: render all system users without admin roles -->
+              <option value="1">Sarah Johnson (sarahjohnson)</option>
+              <option value="2">Michael Chen (mchen)</option>
+              <option value="3">Emily Davis (emilydavis)</option>
+            </select>
+          </div>
+          <div><label class="label">Authorize As Role</label>
+            <select class="select" name="new_role" required>
+              <option value="">Select a role...</option>
+              <option value="Staff">Staff (Equipment Management Access)</option>
+              <option value="Administrator">Administrator (Full System Access)</option>
+            </select>
+          </div>
+          <div><label class="label">Authorization Reason</label><textarea class="input" name="reason" rows="3" placeholder="Document the business reason for this authorization..." required></textarea></div>
+          <div class="flex justify-end gap-2">
+            <button type="button" class="btn btn-outline" data-modal-close>Cancel</button>
+            <button type="submit" class="btn btn-primary">Authorize</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- Modal: Edit Authorization -->
+    <div class="modal" id="editAuthorization">
+      <div class="modal-card">
+        <div class="card-header"><h3 class="font-semibold text-navy">Edit Official Authorization</h3>
+          <button data-modal-close class="text-gray-400 hover:text-gray-700">✕</button></div>
+        <form method="POST" action="REPLACE_WITH_PHP_ENDPOINT" class="card-body grid grid-cols-1 gap-4">
+          <input type="hidden" name="username" id="authUsername" />
+          <div><label class="label">Official User</label><input class="input bg-gray-100" id="authUserDisplay" disabled /></div>
+          <div><label class="label">Current Authorization</label><input class="input bg-gray-100" id="authCurrentRole" disabled /></div>
+          <div><label class="label">Change Authorization To</label>
+            <select class="select" name="new_role" required>
+              <option value="">Select a role...</option>
+              <option value="Staff">Staff (Equipment Management Access)</option>
+              <option value="Administrator">Administrator (Full System Access)</option>
+              <option value="Revoke">Revoke (Remove Official Authorization)</option>
+            </select>
+          </div>
+          <div><label class="label">Reason for Change</label><textarea class="input" name="reason" rows="3" placeholder="Document the reason for this change..." required></textarea></div>
+          <div class="flex justify-end gap-2">
+            <button type="button" class="btn btn-outline" data-modal-close>Cancel</button>
+            <button type="submit" class="btn btn-primary">Update Authorization</button>
           </div>
         </form>
       </div>
@@ -103,5 +203,12 @@
 
   </div>
   <script src="../js/shared.js"></script>
+  <script>
+    function setAuthorizationData(username, fullName, currentAuth) {
+      document.getElementById('authUsername').value = username;
+      document.getElementById('authUserDisplay').value = fullName + ' (' + username + ')';
+      document.getElementById('authCurrentRole').value = currentAuth;
+    }
+  </script>
 </body>
 </html>

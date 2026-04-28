@@ -15,7 +15,7 @@
       <div class="text-xs text-white/60">Equipment Mgmt</div>
     </div>
   </div>
-  <nav class="flex-1 overflow-y-auto py-4 text-sm">
+  <nav class="flex-1 py-4 text-sm">
     <p class="px-5 text-[11px] uppercase tracking-wider text-white/40 mb-2">Overview</p>
     <a href="admin-dashboard.php" class="nav-link"><span>Dashboard</span></a>
 

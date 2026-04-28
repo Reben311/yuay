@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Equipment • MSU-MCEST CEMS</title>
+  <title>Courses • MSU-MCEST CEMS</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="../css/app.css" />
   <script>
@@ -27,10 +27,10 @@
     <p class="px-5 mt-3 first:mt-0 text-[11px] uppercase tracking-wider text-white/40 mb-2">Overview</p>
     <a href="admin-dashboard.html" class="nav-link">Dashboard</a>
     <p class="px-5 mt-3 first:mt-0 text-[11px] uppercase tracking-wider text-white/40 mb-2">Catalog</p>
-    <a href="equipment.html" class="nav-link active">Equipment</a>
+    <a href="equipment.html" class="nav-link">Equipment</a>
     <a href="materials.html" class="nav-link">Campus Materials</a>
     <p class="px-5 mt-3 first:mt-0 text-[11px] uppercase tracking-wider text-white/40 mb-2">Academics</p>
-    <a href="courses.html" class="nav-link">Courses</a>
+    <a href="courses.html" class="nav-link active">Courses</a>
     <a href="students.html" class="nav-link">Students</a>
     <p class="px-5 mt-3 first:mt-0 text-[11px] uppercase tracking-wider text-white/40 mb-2">Transactions</p>
     <a href="requests.html" class="nav-link flex items-center">Borrow Requests<span class="ml-auto text-[10px] bg-gold text-navy-dark font-semibold px-2 py-0.5 rounded-full"><!-- PHP: pending count -->0</span></a>
@@ -54,65 +54,47 @@
       <div class="px-6 py-4 flex flex-wrap items-center gap-4">
         <button data-sidebar-toggle class="md:hidden inline-flex items-center justify-center w-9 h-9 rounded-md border border-gray-200 text-navy">☰</button>
         <div class="min-w-0">
-          <h1 class="text-lg font-semibold text-navy leading-tight whitespace-nowrap">Equipment Items</h1>
-          <p class="text-xs text-gray-500">Manage campus equipment catalog</p>
+          <h1 class="text-lg font-semibold text-navy leading-tight whitespace-nowrap">Courses</h1>
+          <p class="text-xs text-gray-500">Academic programs and course directory</p>
         </div>
-        <div class="ml-auto flex items-center gap-2 flex-wrap justify-end"><input class="input max-w-xs" placeholder="Search equipment..." data-search-target="#equipmentTable" /><button class="btn btn-primary btn-sm" data-modal-open="addEquipmentModal">+ Add Equipment</button></div>
+        <div class="ml-auto flex items-center gap-2 flex-wrap justify-end"><input class="input max-w-xs" placeholder="Search courses..." data-search-target="#coursesTable" /><button class="btn btn-primary btn-sm" data-modal-open="addCourseModal">+ Add Course</button></div>
       </div>
     </header>
 
     <main class="p-6 space-y-6">
       <section class="card">
-        <div class="card-header gap-3 flex-wrap">
-          <div class="flex items-center gap-2">
-            <select class="select max-w-[10rem]" name="category"><option value="">All categories</option><!-- PHP: categories --></select>
-            <select class="select max-w-[10rem]" name="status">
-              <option value="">All status</option><option>Available</option><option>Borrowed</option><option>Maintenance</option>
-            </select>
-            <select class="select max-w-[10rem]" name="sort">
-              <option value="name">Sort: Name</option><option value="recent">Recently added</option><option value="qty">Quantity</option>
-            </select>
-          </div>
-        </div>
-        <!-- PHP: if no equipment, show empty state -->   
-        <div class="overflow-x-auto" id="equipmentTable">
+        <div class="overflow-x-auto" id="coursesTable">
           <table class="table">
             <thead><tr>
-              <th>Item Code</th><th>Item Name</th><th>Category</th><th>Qty</th><th>Available</th>
-              <th>Condition</th><th>Status</th><th class="text-right">Actions</th>
+              <th>Course Code</th><th>Course Name</th><th>Department</th>
             </tr></thead>
             <tbody>
-              <!-- PHP LOOP: equipment rows here -->
-              <tr><td colspan="8"><div class="empty"><div class="icon">📭</div><p class="font-medium text-gray-700">No equipment yet</p><p class="text-sm">Click “Add Equipment” to add your first item.</p></div></td></tr>
+              <!-- PHP LOOP: courses rows -->
+              <tr><td colspan="7"><div class="empty"><div class="icon">📚</div><p class="font-medium text-gray-700">No courses yet</p><p class="text-sm">Add courses or import from CSV.</p></div></td></tr>
             </tbody>
           </table>
+        </div>
+        <div class="card-body flex items-center justify-between text-sm text-gray-500">
+          <p><!-- PHP: showing X of Y -->Showing 0 records</p>
+          <div class="flex gap-1">
+            <button class="btn btn-outline btn-sm">Previous</button>
+            <button class="btn btn-outline btn-sm">Next</button>
+          </div>
         </div>
       </section>
     </main>
 
-    <!-- Add Equipment Modal -->
-    <div class="modal" id="addEquipmentModal" role="dialog" aria-modal="true">
+    <div class="modal" id="addCourseModal">
       <div class="modal-card">
-        <div class="card-header">
-          <h3 class="font-semibold text-navy">Add Equipment</h3>
-          <button data-modal-close class="text-gray-400 hover:text-gray-700">✕</button>
-        </div>
+        <div class="card-header"><h3 class="font-semibold text-navy">Add Course</h3>
+          <button data-modal-close class="text-gray-400 hover:text-gray-700">✕</button></div>
         <form method="POST" action="REPLACE_WITH_PHP_ENDPOINT" class="card-body grid grid-cols-1 md:grid-cols-2 gap-4">
-          <input type="hidden" name="id" value="" />
-          <div><label class="label">Item code</label><input class="input" name="item_code" required /></div>
-          <div><label class="label">Item name</label><input class="input" name="item_name" required /></div>
-          <div><label class="label">Category</label><input class="input" name="category" /></div>
-          <div><label class="label">Quantity</label><input class="input" type="number" name="quantity" min="0" required /></div>
-          <div><label class="label">Condition</label>
-            <select class="select" name="condition"><option>Good</option><option>Fair</option><option>Needs repair</option></select>
-          </div>
-          <div><label class="label">Status</label>
-            <select class="select" name="status"><option>Available</option><option>Borrowed</option><option>Maintenance</option></select>
-          </div>
-          <div class="md:col-span-2"><label class="label">Description</label><textarea class="textarea" name="description" rows="3"></textarea></div>
+          <div><label class="label">Course Code</label><input class="input" name="course_code" placeholder="e.g., CS101" required /></div>
+          <div><label class="label">Course Name</label><input class="input" name="course_name" placeholder="e.g., Introduction to Computer Science" required /></div>
+          <div><label class="label">Department</label><input class="input" name="department" placeholder="e.g., Computer Science" required /></div>
           <div class="md:col-span-2 flex justify-end gap-2">
             <button type="button" class="btn btn-outline" data-modal-close>Cancel</button>
-            <button type="submit" class="btn btn-primary">Save Equipment</button>
+            <button type="submit" class="btn btn-primary">Save Course</button>
           </div>
         </form>
       </div>
