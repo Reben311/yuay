@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Register • MSU-MCEST CEMS</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="../css/app.css" />
+  <script>
+    tailwind.config = { theme: { extend: { colors: {
+      navy:'#0B2545','navy-dark':'#061A33','navy-soft':'#13335E',
+      gold:'#D4A017','gold-dark':'#B8860B', surface:'#F7F8FB',
+    }}}}
+  </script>
+</head>
+<body class="min-h-screen bg-surface">
+  <main class="page-fade min-h-screen flex items-center justify-center p-6">
+    <div class="w-full max-w-2xl">
+      <div class="flex items-center gap-3 mb-6">
+        <div class="w-10 h-10 rounded-md bg-navy text-white grid place-items-center font-bold">M</div>
+        <div>
+          <div class="font-semibold text-navy">MSU-MCEST</div>
+          <div class="text-xs text-gray-500">Equipment Management</div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-header">
+          <div>
+            <h1 class="text-lg font-semibold text-navy">Create your account</h1>
+            <p class="text-sm text-gray-500">Fill in the form to register.</p>
+          </div>
+        </div>
+        <div class="card-body">
+          <!-- PHP: success/error messages -->
+          <div id="regMsg" class="hidden mb-4 text-sm rounded-md px-3 py-2"></div>
+
+          <form id="registerForm" method="POST" action="REPLACE_WITH_PHP_ENDPOINT" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <label class="label" for="first_name">First name</label>
+              <input class="input" id="first_name" name="first_name" required />
+            </div>
+            <div>
+              <label class="label" for="last_name">Last name</label>
+              <input class="input" id="last_name" name="last_name" required />
+            </div>
+            <div>
+              <label class="label" for="username">Username</label>
+              <input class="input" id="username" name="username" required />
+            </div>
+            <div>
+              <label class="label" for="email">Email</label>
+              <input class="input" type="email" id="email" name="email" required />
+            </div>
+            <div>
+              <label class="label" for="course">Course / Program</label>
+              <input class="input" id="course" name="course" placeholder="e.g. BSIT" />
+            </div>
+            <div>
+              <label class="label" for="role">Role</label>
+              <select class="select" id="role" name="role">
+                <option value="student">Student</option>
+                <option value="staff">Staff</option>
+                <option value="admin">Administrator</option>
+              </select>
+            </div>
+            <div>
+              <label class="label" for="password">Password</label>
+              <input class="input" type="password" id="password" name="password" required minlength="6" />
+            </div>
+            <div>
+              <label class="label" for="confirm_password">Confirm password</label>
+              <input class="input" type="password" id="confirm_password" name="confirm_password" required minlength="6" />
+            </div>
+
+            <div class="md:col-span-2 flex items-center justify-between pt-2">
+              <a href="login.html" class="text-sm text-navy hover:text-gold-dark font-medium">← Back to login</a>
+              <button class="btn btn-primary" type="submit">Create account</button>
+            </div>
+          </form>
+        </div>
+      </div>
+      <p class="mt-6 text-xs text-gray-400 text-center">
+        Front-end preview. Account creation is handled by the PHP backend.
+      </p>
+    </div>
+  </main>
+
+  <script src="../js/shared.js"></script>
+  <script>
+    var form = document.getElementById('registerForm');
+    var msg = document.getElementById('regMsg');
+    form.addEventListener('submit', function (e) {
+      // Lightweight client-side validation only. Real validation happens server-side.
+      if (form.password.value !== form.confirm_password.value) {
+        e.preventDefault();
+        msg.className = 'mb-4 text-sm rounded-md px-3 py-2 bg-red-50 text-red-700 border border-red-200';
+        msg.textContent = 'Passwords do not match.';
+        return;
+      }
+      if (form.action.indexOf('REPLACE_WITH_PHP_ENDPOINT') !== -1) {
+        e.preventDefault();
+        msg.className = 'mb-4 text-sm rounded-md px-3 py-2 bg-emerald-50 text-emerald-700 border border-emerald-200';
+        msg.textContent = 'Form looks good. Connect this form to your PHP endpoint to complete registration.';
+      }
+    });
+  </script>
+</body>
+</html>

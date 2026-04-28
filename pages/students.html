@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Students • MSU-MCEST CEMS</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="../css/app.css" />
+  <script>
+    tailwind.config = { theme: { extend: { colors: {
+      navy:'#0B2545','navy-dark':'#061A33','navy-soft':'#13335E',
+      gold:'#D4A017','gold-dark':'#B8860B', surface:'#F7F8FB',
+    }}}}
+  </script>
+</head>
+<body class="min-h-screen bg-surface">
+<!-- PHP: session check (admin/staff only) -->
+<aside class="sidebar hidden md:flex md:flex-col w-64 bg-navy text-white fixed inset-y-0 left-0 z-30">
+  <div class="px-5 py-5 border-b border-white/10 flex items-center gap-3">
+    <div class="w-9 h-9 rounded-md bg-gold text-navy-dark grid place-items-center font-bold">M</div>
+    <div>
+      <div class="text-sm font-semibold leading-tight">MSU-MCEST</div>
+      <div class="text-xs text-white/60">Equipment Mgmt</div>
+    </div>
+  </div>
+  <nav class="flex-1 overflow-y-auto py-4 text-sm">
+    <p class="px-5 mt-3 first:mt-0 text-[11px] uppercase tracking-wider text-white/40 mb-2">Overview</p>
+    <a href="admin-dashboard.html" class="nav-link">Dashboard</a>
+    <p class="px-5 mt-3 first:mt-0 text-[11px] uppercase tracking-wider text-white/40 mb-2">Catalog</p>
+    <a href="equipment.html" class="nav-link">Equipment</a>
+    <a href="materials.html" class="nav-link">Campus Materials</a>
+    <p class="px-5 mt-3 first:mt-0 text-[11px] uppercase tracking-wider text-white/40 mb-2">Transactions</p>
+    <a href="requests.html" class="nav-link flex items-center">Borrow Requests<span class="ml-auto text-[10px] bg-gold text-navy-dark font-semibold px-2 py-0.5 rounded-full"><!-- PHP: pending count -->0</span></a>
+    <a href="transactions.html" class="nav-link">Transactions</a>
+    <p class="px-5 mt-3 first:mt-0 text-[11px] uppercase tracking-wider text-white/40 mb-2">Admin</p>
+    <a href="students.html" class="nav-link active">Students</a>
+    <a href="users.html" class="nav-link">System Users</a>
+    <a href="admin-settings.html" class="nav-link">Settings</a>
+    <a href="change-password.html" class="nav-link">Change Password</a>
+  </nav>
+  <div class="p-4 border-t border-white/10 flex items-center gap-3">
+    <div class="w-9 h-9 rounded-full bg-white/10 grid place-items-center text-sm font-semibold"><!-- PHP: initials -->A</div>
+    <div class="text-sm leading-tight">
+      <div class="font-medium"><!-- PHP: full name -->Admin User</div>
+      <div class="text-white/50 text-xs"><!-- PHP: role -->administrator</div>
+    </div>
+    <a href="login.html" class="ml-auto text-white/60 hover:text-gold text-xs" data-confirm="Log out now?">Logout</a>
+  </div>
+</aside>
+  <div class="md:ml-64 main-shift page-fade">
+    <header class="bg-white border-b border-gray-200 sticky top-0 z-10">
+      <div class="px-6 py-4 flex flex-wrap items-center gap-4">
+        <button data-sidebar-toggle class="md:hidden inline-flex items-center justify-center w-9 h-9 rounded-md border border-gray-200 text-navy">☰</button>
+        <div class="min-w-0">
+          <h1 class="text-lg font-semibold text-navy leading-tight whitespace-nowrap">Student Masterlist</h1>
+          <p class="text-xs text-gray-500">Registered students directory</p>
+        </div>
+        <div class="ml-auto flex items-center gap-2 flex-wrap justify-end"><input class="input max-w-xs" placeholder="Search students..." data-search-target="#studentsTable" /><button class="btn btn-primary btn-sm" data-modal-open="addStudentModal">+ Add Student</button></div>
+      </div>
+    </header>
+
+    <main class="p-6 space-y-6">
+      <section class="card">
+        <div class="overflow-x-auto" id="studentsTable">
+          <table class="table">
+            <thead><tr>
+              <th>Student ID</th><th>Full Name</th><th>Course</th><th>Year</th>
+              <th>Email</th><th>Contact</th><th>Status</th><th class="text-right">Actions</th>
+            </tr></thead>
+            <tbody>
+              <!-- PHP LOOP: students rows -->
+              <tr><td colspan="8"><div class="empty"><div class="icon">📭</div><p class="font-medium text-gray-700">No students yet</p><p class="text-sm">Add students or import from CSV.</p></div></td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="card-body flex items-center justify-between text-sm text-gray-500">
+          <p><!-- PHP: showing X of Y -->Showing 0 records</p>
+          <div class="flex gap-1">
+            <button class="btn btn-outline btn-sm">Previous</button>
+            <button class="btn btn-outline btn-sm">Next</button>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <div class="modal" id="addStudentModal">
+      <div class="modal-card">
+        <div class="card-header"><h3 class="font-semibold text-navy">Add Student</h3>
+          <button data-modal-close class="text-gray-400 hover:text-gray-700">✕</button></div>
+        <form method="POST" action="REPLACE_WITH_PHP_ENDPOINT" class="card-body grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div><label class="label">Student ID</label><input class="input" name="student_id" required /></div>
+          <div><label class="label">Full name</label><input class="input" name="full_name" required /></div>
+          <div><label class="label">Course / Program</label><input class="input" name="course" /></div>
+          <div><label class="label">Year level</label><input class="input" name="year_level" /></div>
+          <div><label class="label">Email</label><input class="input" type="email" name="email" /></div>
+          <div><label class="label">Contact number</label><input class="input" name="contact" /></div>
+          <div class="md:col-span-2 flex justify-end gap-2">
+            <button type="button" class="btn btn-outline" data-modal-close>Cancel</button>
+            <button type="submit" class="btn btn-primary">Save Student</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+  </div>
+  <script src="../js/shared.js"></script>
+</body>
+</html>
